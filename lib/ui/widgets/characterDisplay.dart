@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CharacterDisplay extends StatelessWidget {
+  final id;
   final imageUrl;
   final name;
   final gender;
   final species;
 
   CharacterDisplay(
-      {@required this.imageUrl, @required this.name, @required this.gender, @required this.species});
+      {@required this.id, @required this.imageUrl, @required this.name, @required this.gender, @required this.species});
 
   @override
   Widget build(BuildContext context) {
