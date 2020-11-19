@@ -8,11 +8,20 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   TabController _tabController;
-  String title;
+  String title = "Characters";
 
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      setState(() {
+        if (_tabController.index == 0)
+          title = "Characters";
+        else if (_tabController.index == 1)
+          title = "Locations";
+        else if (_tabController.index == 2) title = "Episodes";
+      });
+    });
     super.initState();
   }
 
@@ -23,27 +32,59 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               SliverAppBar(
-                expandedHeight: MediaQuery.of(context).size.height * 0.35,
+                backgroundColor: Colors.white,
+                elevation: 0,
+                expandedHeight: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.35,
                 pinned: true,
-                title: Text(
-                  getTitle(_tabController.index),
+                title: Container(
+                  padding: EdgeInsets.only(bottom: 5,top: 5,right: 10,left: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.black38,
+                  ),
+                  child: Text(title),
                 ),
                 flexibleSpace: FlexibleSpaceBar(
                     background: Image.asset(
-                  "assets/rm.jpg",
-                  fit: BoxFit.cover,
-                )),
+                      "assets/rm.jpg",
+                      fit: BoxFit.cover,
+                    )),
                 bottom: TabBar(
                   labelPadding: EdgeInsets.only(bottom: 5),
                   tabs: [
-                    Icon(
-                      Icons.people,
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.black38,
+                      ),
+                      child: Icon(
+                        Icons.people,
+                      ),
                     ),
-                    Icon(Icons.location_on),
-                    Icon(Icons.movie)
+                    Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.black38,
+                        ),
+                        child: Icon(Icons.location_on),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.black38,
+                      ),
+                      child: Icon(Icons.movie),
+                    ),
                   ],
                   controller: _tabController,
                 ),
+                actions: [],
               )
             ];
           },
@@ -106,15 +147,4 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ])),
     );
   }
-}
-
-String getTitle(int index) {
-  if (index == 0)
-    return 'Characters';
-  else if (index == 1)
-    return 'Locations';
-  else if (index == 2)
-    return 'Episodes';
-  else
-    throw ErrorHint('Invalid tab index');
 }

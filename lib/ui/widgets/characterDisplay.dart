@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ricknmorty/ui/widgets/imageView.dart';
 
 class CharacterDisplay extends StatelessWidget {
   final id;
@@ -8,7 +9,11 @@ class CharacterDisplay extends StatelessWidget {
   final species;
 
   CharacterDisplay(
-      {@required this.id, @required this.imageUrl, @required this.name, @required this.gender, @required this.species});
+      {@required this.id,
+      @required this.imageUrl,
+      @required this.name,
+      @required this.gender,
+      @required this.species});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,11 @@ class CharacterDisplay extends StatelessWidget {
                   radius: 50,
                 ),
                 onTap: () {
-                  print('Show Image');
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                    return MyImageView(
+                      imageUrl: imageUrl,
+                    );
+                  }));
                 },
               ),
               Padding(
