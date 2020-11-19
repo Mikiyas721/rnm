@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:ricknmorty/data/databaseManager.dart';
 import './ui/pages/homePage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  DatabaseManager.createTables();
   runApp(MyApp());
 }
 

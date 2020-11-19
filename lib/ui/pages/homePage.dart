@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ricknmorty/data/databaseManager.dart';
 import '../widgets/myTab.dart';
 
 class HomePage extends StatefulWidget {

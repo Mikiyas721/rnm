@@ -7,8 +7,9 @@ import 'characterDisplay.dart';
 class MyTab extends StatelessWidget {
   final String type;
   final String query;
+  final List<Map<String, dynamic >> ids;
 
-  MyTab({@required this.type, @required this.query});
+  MyTab({@required this.type, @required this.query,@required this.ids});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +30,7 @@ class MyTab extends StatelessWidget {
                     imageUrl: result.data['characters']['results'][index]['image'],
                     name: result.data['characters']['results'][index]['name'],
                     gender: result.data['characters']['results'][index]['gender'],
+                    selected: ids.contains({'id': result.data['characters']['results'][index]['id']}),
                   );
                 else if (type == "Location")
                   return LocationDisplay(
@@ -38,6 +40,7 @@ class MyTab extends StatelessWidget {
                     dimension: result.data['locations']['results'][index]['dimension'],
                     created: result.data['locations']['results'][index]['created'],
                     residents: result.data['locations']['results'][index]['residents'].length,
+                    selected: ids.contains({'id': result.data['locations']['results'][index]['id']}),
                   );
                 else
                   return EpisodeDisplay(
@@ -47,6 +50,7 @@ class MyTab extends StatelessWidget {
                     episode: result.data['episodes']['results'][index]['episode'],
                     created: result.data['episodes']['results'][index]['created'],
                     characters: result.data['episodes']['results'][index]['characters'].length,
+                    selected: ids.contains({'id': result.data['episodes']['results'][index]['id']}),
                   );
               },
               itemCount: getItemCount(result));
