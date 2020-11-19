@@ -7,9 +7,9 @@ import 'characterDisplay.dart';
 class MyTab extends StatelessWidget {
   final String type;
   final String query;
-  final List<Map<String, dynamic >> ids;
+  final List<Map<String, dynamic >> ids = [];
 
-  MyTab({@required this.type, @required this.query,@required this.ids});
+  MyTab({@required this.type, @required this.query});
 
   @override
   Widget build(BuildContext context) {
