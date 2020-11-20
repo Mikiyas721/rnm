@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../widgets/myTab.dart';
 
@@ -15,6 +16,55 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   TabController _tabController;
   String title = "Characters";
+  final characterQuery = """
+               query GetCharacters{
+                 characters {
+                   results {
+                     id
+                     name
+                     image
+                     species
+                     type
+                     gender
+                   }
+                 }
+               }
+               """;
+  final locationQuery = """
+               query GetLocation{
+                 locations {
+                   results {
+                     id
+                     name
+                     type
+                     dimension
+                     created
+                     residents{
+                       name
+                     }
+                   }
+                 }
+               }
+               """;
+  final episodeQuery = """
+               query GetEpisode{
+                 episodes {
+                   results {
+                     id
+                     name
+                     air_date
+                     episode
+                     created
+                     characters{
+                       name
+                     }
+                   }
+                 }
+               }
+               """;
+  String currentCharacterQuery;
+  String currentLocationQuery;
+  String currentEpisodeQuery;
 
   @override
   void initState() {
@@ -28,6 +78,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         else if (_tabController.index == 2) title = "Episodes";
       });
     });
+    currentCharacterQuery = characterQuery;
+    currentLocationQuery = locationQuery;
+    currentEpisodeQuery = episodeQuery;
     super.initState();
   }
 
@@ -51,9 +104,91 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   child: Text(title),
                 ),
                 flexibleSpace: FlexibleSpaceBar(
-                    background: Image.asset(
-                  "assets/rm.jpg",
-                  fit: BoxFit.cover,
+                    background: Container(
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 30, right: 30),
+                      child: CupertinoTextField(
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                        keyboardType: TextInputType.text,
+                        style: TextStyle(fontSize: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Color(0xBBF0F1F5),
+                        ),
+                        placeholder: 'Search',
+                        prefix: Padding(
+                          padding: EdgeInsets.fromLTRB(9, 6, 9, 6),
+                          child: Icon(
+                            Icons.search,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        onChanged: (String enteredValue) {
+                          setState(() {
+                            if (_tabController.index == 0) {
+                              if (enteredValue.isEmpty)
+                                currentCharacterQuery = characterQuery;
+                              else
+                                currentCharacterQuery = """query SearchCharacter{
+                                                             characters(filter: {name:"$enteredValue"}) {
+                                                               results{
+                                                                 id
+                                                                 name
+                                                                 image
+                                                                 species
+                                                                 type
+                                                                 gender
+                                                               }
+                                                             }
+                                                           }""";
+                            } else if (_tabController.index == 1) {
+                              if (enteredValue.isEmpty)
+                                currentLocationQuery = locationQuery;
+                              else
+                                currentLocationQuery = """query SearchLocation{
+                                                             locations(filter: {name:"$enteredValue"}) {
+                                                               results{
+                                                                  id
+                                                                  name
+                                                                  type
+                                                                  dimension
+                                                                  created
+                                                                  residents{
+                                                                    name
+                                                                  }
+                                                               }
+                                                             }
+                                                           }""";
+                            } else {
+                              if (enteredValue.isEmpty)
+                                currentEpisodeQuery = episodeQuery;
+                              else
+                                currentEpisodeQuery = """query SearchEpisode{
+                                                             episodes(filter: {episode:"$enteredValue"}) {
+                                                               results{
+                                                                 id
+                                                                 name
+                                                                 air_date
+                                                                 episode
+                                                                 created
+                                                                 characters{
+                                                                   name
+                                                                 }
+                                                               }
+                                                             }
+                                                           }""";
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                    image: AssetImage("assets/rm.jpg"),
+                    fit: BoxFit.cover,
+                  )),
                 )),
                 bottom: TabBar(
                   labelPadding: EdgeInsets.only(bottom: 5),
@@ -92,61 +227,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ];
           },
           body: TabBarView(controller: _tabController, children: [
-            MyTab(
-                type: "Character",
-                query: """
-               query GetCharacters{
-                 characters {
-                   results {
-                     id
-                     name
-                     image
-                     species
-                     type
-                     gender
-                   }
-                 }
-               }
-               """,
-                ids: widget.characters ?? []),
-            MyTab(
-                type: "Location",
-                query: """
-               query GetLocation{
-                 locations {
-                   results {
-                     id
-                     name
-                     type
-                     dimension
-                     created
-                     residents{
-                       name
-                     }
-                   }
-                 }
-               }
-               """,
-                ids: widget.locations ?? []),
-            MyTab(
-                type: "Episode",
-                query: """
-               query GetEpisode{
-                 episodes {
-                   results {
-                     id
-                     name
-                     air_date
-                     episode
-                     created
-                     characters{
-                       name
-                     }
-                   }
-                 }
-               }
-               """,
-                ids: widget.episodes ?? [])
+            MyTab(type: "Character", query: currentCharacterQuery, ids: widget.characters ?? []),
+            MyTab(type: "Location", query: currentLocationQuery, ids: widget.locations ?? []),
+            MyTab(type: "Episode", query: currentEpisodeQuery, ids: widget.episodes ?? [])
           ])),
     );
   }

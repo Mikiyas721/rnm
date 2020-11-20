@@ -21,7 +21,7 @@ class MyTab extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else {
-          return ListView.builder(
+          return result.data==null?Center(child:Text('No $type Found')):ListView.builder(
               itemBuilder: (BuildContext context, int index) {
                 if (type == "Character")
                   return CharacterDisplay(
