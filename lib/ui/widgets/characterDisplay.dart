@@ -33,8 +33,7 @@ class _CharacterDisplayState extends State<CharacterDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Card(
+    return Card(
         elevation: 3,
         margin: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
@@ -104,8 +103,6 @@ class _CharacterDisplayState extends State<CharacterDisplay> {
             )
           ],
         ),
-      ),
-      onTap: () {},
     );
   }
 }

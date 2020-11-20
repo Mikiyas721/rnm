@@ -1,36 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:ricknmorty/data/databaseManager.dart';
+import './data/databaseManager.dart';
 import './ui/pages/homePage.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DatabaseManager.createTables();
-  runApp(MyApp());
+
+  runApp(MyApp(await DatabaseManager.fetchFavouriteCharacters(),
+      await DatabaseManager.fetchFavouriteLocations(), await DatabaseManager.fetchFavouriteEpisode()));
 }
 
 class MyApp extends StatelessWidget {
   final ValueNotifier<GraphQLClient> client;
+  final characters;
+  final locations;
+  final episodes;
 
-  MyApp()
+  MyApp(this.characters, this.locations, this.episodes)
       : client = ValueNotifier<GraphQLClient>(
-    GraphQLClient(
-      cache: InMemoryCache(),
-      link: HttpLink(uri: 'https://rickandmortyapi.com/graphql'),
-    ),
-  );
+          GraphQLClient(
+            cache: InMemoryCache(),
+            link: HttpLink(uri: 'https://rickandmortyapi.com/graphql'),
+          ),
+        );
 
   @override
   Widget build(BuildContext context) {
     return GraphQLProvider(
         client: client,
         child: MaterialApp(
-          routes:routes,
-          initialRoute: '/',
+          home: HomePage(
+            characters: characters,
+            episodes: locations,
+            locations: episodes,
+          ),
         ));
   }
 }
-
-final routes = {
-  '/': (BuildContext context) => HomePage()
-};

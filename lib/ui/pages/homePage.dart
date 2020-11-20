@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:ricknmorty/data/databaseManager.dart';
 import '../widgets/myTab.dart';
 
 class HomePage extends StatefulWidget {
+  final List<Map<String, dynamic>> characters;
+  final List<Map<String, dynamic>> locations;
+  final List<Map<String, dynamic>> episodes;
+
+  HomePage({@required this.characters, @required this.locations, @required this.episodes});
+
   @override
   HomePageState createState() => HomePageState();
 }
@@ -35,13 +40,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
               SliverAppBar(
                 backgroundColor: Colors.white,
                 elevation: 0,
-                expandedHeight: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.35,
+                expandedHeight: MediaQuery.of(context).size.height * 0.35,
                 pinned: true,
                 title: Container(
-                  padding: EdgeInsets.only(bottom: 5,top: 5,right: 10,left: 10),
+                  padding: EdgeInsets.only(bottom: 5, top: 5, right: 10, left: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     color: Colors.black38,
@@ -50,9 +52,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
                 flexibleSpace: FlexibleSpaceBar(
                     background: Image.asset(
-                      "assets/rm.jpg",
-                      fit: BoxFit.cover,
-                    )),
+                  "assets/rm.jpg",
+                  fit: BoxFit.cover,
+                )),
                 bottom: TabBar(
                   labelPadding: EdgeInsets.only(bottom: 5),
                   tabs: [
@@ -67,12 +69,12 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ),
                     ),
                     Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.black38,
-                        ),
-                        child: Icon(Icons.location_on),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.black38,
+                      ),
+                      child: Icon(Icons.location_on),
                     ),
                     Container(
                       padding: EdgeInsets.all(5),
@@ -91,8 +93,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           },
           body: TabBarView(controller: _tabController, children: [
             MyTab(
-              type: "Character",
-              query: """
+                type: "Character",
+                query: """
                query GetCharacters{
                  characters {
                    results {
@@ -106,10 +108,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                  }
                }
                """,
-            ),
+                ids: widget.characters ?? []),
             MyTab(
-              type: "Location",
-              query: """
+                type: "Location",
+                query: """
                query GetLocation{
                  locations {
                    results {
@@ -119,16 +121,16 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                      dimension
                      created
                      residents{
-                       id
+                       name
                      }
                    }
                  }
                }
                """,
-            ),
+                ids: widget.locations ?? []),
             MyTab(
-              type: "Episode",
-              query: """
+                type: "Episode",
+                query: """
                query GetEpisode{
                  episodes {
                    results {
@@ -138,13 +140,13 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                      episode
                      created
                      characters{
-                       id
+                       name
                      }
                    }
                  }
                }
                """,
-            )
+                ids: widget.episodes ?? [])
           ])),
     );
   }

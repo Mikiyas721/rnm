@@ -31,7 +31,7 @@ class DatabaseManager {
   }
 
   static Future<List<Map<String, dynamic>>> fetchFavouriteCharacters() async {
-    final database = await openDatabase('Favourite.db');
+    final database = await openDatabase('Favourites.db');
     List<Map<String, dynamic>> saved = await database.rawQuery('SELECT * FROM Characters');
     database.close();
     return saved;
