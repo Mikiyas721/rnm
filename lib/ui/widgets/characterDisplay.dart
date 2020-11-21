@@ -9,6 +9,7 @@ class CharacterDisplay extends StatefulWidget {
   final gender;
   final species;
   final selected;
+  final Function(bool isSelected) onIconPressed;
 
   CharacterDisplay(
       {@required this.id,
@@ -16,6 +17,7 @@ class CharacterDisplay extends StatefulWidget {
       @required this.name,
       @required this.gender,
       @required this.species,
+      @required this.onIconPressed,
       this.selected = false});
 
   @override
@@ -31,9 +33,7 @@ class _CharacterDisplayState extends State<CharacterDisplay> {
   void initState() {
     isIconSelected = widget.selected;
     characterImage = NetworkImage(widget.imageUrl);
-    characterImage
-        .resolve(ImageConfiguration())
-        .addListener(ImageStreamListener((_,__) {
+    characterImage.resolve(ImageConfiguration()).addListener(ImageStreamListener((_, __) {
       if (mounted) {
         setState(() {
           isImageLoading = false;
@@ -68,6 +68,7 @@ class _CharacterDisplayState extends State<CharacterDisplay> {
                           ? DatabaseManager.addFavouriteCharacter(widget.id)
                           : DatabaseManager.deleteCharacter(widget.id);
                     });
+                    widget.onIconPressed(isIconSelected);
                   })),
           Container(
             padding: EdgeInsets.all(15),
@@ -75,7 +76,7 @@ class _CharacterDisplayState extends State<CharacterDisplay> {
               children: [
                 isImageLoading
                     ? CircleAvatar(
-                        child: Text('${widget.name[0]}', style:TextStyle(fontSize:20)),
+                        child: Text('${widget.name[0]}', style: TextStyle(fontSize: 20)),
                         radius: 50,
                       )
                     : GestureDetector(

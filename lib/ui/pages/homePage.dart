@@ -65,17 +65,38 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   String currentCharacterQuery;
   String currentLocationQuery;
   String currentEpisodeQuery;
+  String characterFilter = "name";
+  String locationFilter = "name";
+  String episodeFilter = "name";
+  List<PopupMenuEntry<String>> popUpMenu;
+  List<PopupMenuEntry<String>> defaultPopUp = [
+    PopupMenuItem(value: "name", child: Text('Name')),
+    PopupMenuItem(value: "gender", child: Text('Gender')),
+    PopupMenuItem(value: "species", child: Text('Species')),
+  ];
 
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
+    popUpMenu = defaultPopUp;
     _tabController.addListener(() {
       setState(() {
-        if (_tabController.index == 0)
+        if (_tabController.index == 0) {
           title = "Characters";
-        else if (_tabController.index == 1)
+          popUpMenu = defaultPopUp;
+        } else if (_tabController.index == 1) {
           title = "Locations";
-        else if (_tabController.index == 2) title = "Episodes";
+          popUpMenu =  [
+            PopupMenuItem(value: "name", child: Text('Name')),
+            PopupMenuItem(value: "type", child: Text('Type')),
+          ];
+        } else if (_tabController.index == 2) {
+          title = "Episodes";
+          popUpMenu = [
+            PopupMenuItem(value: "name", child: Text('Name')),
+            PopupMenuItem(value: "episode", child: Text('Episode')),
+          ];
+        }
       });
     });
     currentCharacterQuery = characterQuery;
@@ -124,6 +145,22 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             color: Colors.grey,
                           ),
                         ),
+                        suffix: PopupMenuButton<String>(
+                          onSelected: (String selected) {
+                            setState(() {
+                              if (_tabController.index == 0)
+                                characterFilter = selected;
+                              else if (_tabController.index == 1)
+                                locationFilter = selected;
+                              else if (_tabController.index == 2) episodeFilter = selected;
+                            });
+                          },
+                          color: Color(0xBBF0F1F5),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          itemBuilder: (BuildContext context) {
+                            return popUpMenu;
+                          },
+                        ),
                         onChanged: (String enteredValue) {
                           setState(() {
                             if (_tabController.index == 0) {
@@ -131,7 +168,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 currentCharacterQuery = characterQuery;
                               else
                                 currentCharacterQuery = """query SearchCharacter{
-                                                             characters(filter: {name:"$enteredValue"}) {
+                                                             characters(filter: {$characterFilter:"$enteredValue"}) {
                                                                results{
                                                                  id
                                                                  name
@@ -147,7 +184,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 currentLocationQuery = locationQuery;
                               else
                                 currentLocationQuery = """query SearchLocation{
-                                                             locations(filter: {name:"$enteredValue"}) {
+                                                             locations(filter: {$locationFilter:"$enteredValue"}) {
                                                                results{
                                                                   id
                                                                   name
@@ -165,7 +202,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 currentEpisodeQuery = episodeQuery;
                               else
                                 currentEpisodeQuery = """query SearchEpisode{
-                                                             episodes(filter: {episode:"$enteredValue"}) {
+                                                             episodes(filter: {$episodeFilter:"$enteredValue"}) {
                                                                results{
                                                                  id
                                                                  name

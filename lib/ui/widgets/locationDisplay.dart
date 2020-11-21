@@ -10,6 +10,7 @@ class LocationDisplay extends StatefulWidget {
   final String created;
   final List residents;
   final bool selected;
+  final Function(bool isSelected) onIconPressed;
 
   LocationDisplay(
       {@required this.id,
@@ -18,6 +19,7 @@ class LocationDisplay extends StatefulWidget {
       @required this.dimension,
       @required this.created,
       @required this.residents,
+      @required this.onIconPressed,
       this.selected = false});
 
   @override
@@ -63,8 +65,8 @@ class _LocationDisplayState extends State<LocationDisplay> {
                         isIconSelected
                             ? DatabaseManager.addFavouriteLocation(widget.id)
                             : DatabaseManager.deleteLocation(widget.id);
-                        //TODO Add or remove to parent ids variable as well
                       });
+                      widget.onIconPressed(isIconSelected);
                     })),
             Container(
               padding: EdgeInsets.only(left: 30, bottom: 15, top: 15, right: 15),

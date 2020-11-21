@@ -9,6 +9,7 @@ class EpisodeDisplay extends StatefulWidget {
   final String episode;
   final String created;
   final List characters;
+  final Function(bool isSelected) onIconPressed;
 
   final selected;
 
@@ -19,6 +20,7 @@ class EpisodeDisplay extends StatefulWidget {
       @required this.episode,
       @required this.created,
       @required this.characters,
+        @required this.onIconPressed,
       this.selected = false});
 
   @override
@@ -65,6 +67,7 @@ class _EpisodeDisplayState extends State<EpisodeDisplay> {
                               ? DatabaseManager.addFavouriteEpisodes(widget.id)
                               : DatabaseManager.deleteEpisode(widget.id);
                         });
+                        widget.onIconPressed(isIconSelected);
                       })),
               Container(
                 padding: EdgeInsets.only(left: 30, right: 15, top: 15, bottom: 15),
