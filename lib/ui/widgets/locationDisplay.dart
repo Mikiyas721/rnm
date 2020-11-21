@@ -62,10 +62,10 @@ class _LocationDisplayState extends State<LocationDisplay> {
                     onPressed: () {
                       setState(() {
                         isIconSelected = !isIconSelected;
-                        isIconSelected
-                            ? DatabaseManager.addFavouriteLocation(widget.id)
-                            : DatabaseManager.deleteLocation(widget.id);
                       });
+                      isIconSelected
+                          ? DatabaseManager.addFavouriteLocation(widget.id)
+                          : DatabaseManager.deleteLocation(widget.id);
                       widget.onIconPressed(isIconSelected);
                     })),
             Container(

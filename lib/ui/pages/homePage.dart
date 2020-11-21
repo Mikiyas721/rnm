@@ -16,6 +16,21 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   TabController _tabController;
   String title = "Characters";
+  String currentCharacterQuery;
+  String currentLocationQuery;
+  String currentEpisodeQuery;
+  String characterFilter = "name";
+  String locationFilter = "name";
+  String episodeFilter = "name";
+  List<PopupMenuEntry<String>> popUpMenu;
+  List<PopupMenuEntry<String>> defaultPopUp = [
+    PopupMenuItem(value: "name", child: Text('Name')),
+    PopupMenuItem(value: "gender", child: Text('Gender')),
+    PopupMenuItem(value: "species", child: Text('Species')),
+  ];
+  List<Map<String, dynamic>> starredCharacters;
+  List<Map<String, dynamic>> starredLocations;
+  List<Map<String, dynamic>> starredEpisodes;
   final characterQuery = """
                query GetCharacters{
                  characters {
@@ -62,18 +77,6 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                  }
                }
                """;
-  String currentCharacterQuery;
-  String currentLocationQuery;
-  String currentEpisodeQuery;
-  String characterFilter = "name";
-  String locationFilter = "name";
-  String episodeFilter = "name";
-  List<PopupMenuEntry<String>> popUpMenu;
-  List<PopupMenuEntry<String>> defaultPopUp = [
-    PopupMenuItem(value: "name", child: Text('Name')),
-    PopupMenuItem(value: "gender", child: Text('Gender')),
-    PopupMenuItem(value: "species", child: Text('Species')),
-  ];
 
   @override
   void initState() {
@@ -86,7 +89,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           popUpMenu = defaultPopUp;
         } else if (_tabController.index == 1) {
           title = "Locations";
-          popUpMenu =  [
+          popUpMenu = [
             PopupMenuItem(value: "name", child: Text('Name')),
             PopupMenuItem(value: "type", child: Text('Type')),
           ];
@@ -102,6 +105,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     currentCharacterQuery = characterQuery;
     currentLocationQuery = locationQuery;
     currentEpisodeQuery = episodeQuery;
+    starredCharacters = widget.characters;
+    starredLocations = widget.locations;
+    starredEpisodes = widget.episodes;
     super.initState();
   }
 
@@ -126,9 +132,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
                 flexibleSpace: FlexibleSpaceBar(
                     background: Container(
-                  child: Center(
+                  child: Align(
+                    alignment: Alignment.topCenter,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 30, right: 30),
+                      padding: EdgeInsets.only(left: 30, right: 30, top: 90),
                       child: CupertinoTextField(
                         padding: EdgeInsets.only(top: 10, bottom: 10),
                         keyboardType: TextInputType.text,
@@ -264,9 +271,36 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ];
           },
           body: TabBarView(controller: _tabController, children: [
-            MyTab(type: "Character", query: currentCharacterQuery, ids: widget.characters ?? []),
-            MyTab(type: "Location", query: currentLocationQuery, ids: widget.locations ?? []),
-            MyTab(type: "Episode", query: currentEpisodeQuery, ids: widget.episodes ?? [])
+            MyTab(
+              type: "Character",
+              query: currentCharacterQuery,
+              ids: starredCharacters ?? [],
+              onIdsChanged: (ids) {
+                setState(() {
+                  starredCharacters = ids;
+                });
+              },
+            ),
+            MyTab(
+              type: "Location",
+              query: currentLocationQuery,
+              ids: starredLocations ?? [],
+              onIdsChanged: (ids) {
+                setState(() {
+                  starredLocations = ids;
+                });
+              },
+            ),
+            MyTab(
+              type: "Episode",
+              query: currentEpisodeQuery,
+              ids: starredEpisodes ?? [],
+              onIdsChanged: (ids) {
+                setState(() {
+                  starredEpisodes = ids;
+                });
+              },
+            )
           ])),
     );
   }

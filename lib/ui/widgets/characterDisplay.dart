@@ -64,10 +64,10 @@ class _CharacterDisplayState extends State<CharacterDisplay> {
                   onPressed: () {
                     setState(() {
                       isIconSelected = !isIconSelected;
-                      isIconSelected
-                          ? DatabaseManager.addFavouriteCharacter(widget.id)
-                          : DatabaseManager.deleteCharacter(widget.id);
                     });
+                    isIconSelected
+                        ? DatabaseManager.addFavouriteCharacter(widget.id)
+                        : DatabaseManager.deleteCharacter(widget.id);
                     widget.onIconPressed(isIconSelected);
                   })),
           Container(

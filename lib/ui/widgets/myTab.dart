@@ -8,8 +8,9 @@ class MyTab extends StatefulWidget {
   final String type;
   final String query;
   final List<Map<String, dynamic>> ids;
+  final Function(List<Map<String, dynamic>>) onIdsChanged;
 
-  MyTab({@required this.type, @required this.query, @required this.ids});
+  MyTab({@required this.type, @required this.query, @required this.ids, @required this.onIdsChanged});
 
   @override
   _MyTabState createState() => _MyTabState();
@@ -49,9 +50,10 @@ class _MyTabState extends State<MyTab> {
                         onIconPressed: (bool isIconSelected) {
                           setState(() {
                             isIconSelected
-                                ? localId.add({'id': result.data['characters']['results'][index]['id']})
-                                : localId.remove({'id': result.data['characters']['results'][index]['id']});
+                                ? localId = add(result.data['characters']['results'][index]['id'])
+                                : localId = remove(result.data['characters']['results'][index]['id']);
                           });
+                          widget.onIdsChanged(localId);
                         },
                       );
                     else if (widget.type == "Location")
@@ -66,9 +68,10 @@ class _MyTabState extends State<MyTab> {
                         onIconPressed: (bool isIconSelected) {
                           setState(() {
                             isIconSelected
-                                ? localId.add({'id': result.data['locations']['results'][index]['id']})
-                                : localId.remove({'id': result.data['locations']['results'][index]['id']});
+                                ? localId = add(result.data['locations']['results'][index]['id'])
+                                : localId = remove(result.data['locations']['results'][index]['id']);
                           });
+                          widget.onIdsChanged(localId);
                         },
                       );
                     else
@@ -83,9 +86,10 @@ class _MyTabState extends State<MyTab> {
                         onIconPressed: (bool isIconSelected) {
                           setState(() {
                             isIconSelected
-                                ? localId.add({'id': result.data['episodes']['results'][index]['id']})
-                                : localId.remove({'id': result.data['episodes']['results'][index]['id']});
+                                ? localId = add(result.data['episodes']['results'][index]['id'])
+                                : localId = remove(result.data['episodes']['results'][index]['id']);
                           });
+                          widget.onIdsChanged(localId);
                         },
                       );
                   },
@@ -109,5 +113,25 @@ class _MyTabState extends State<MyTab> {
       if (element['id'] == id) return true;
     }
     return false;
+  }
+
+  List<Map<String, dynamic>> remove(String id) {
+    List<Map<String, dynamic>> newList = [];
+    for (Map<String, dynamic> element in localId) {
+      if (element['id'] == id) {
+        continue;
+      }
+      newList.add(element);
+    }
+    return newList;
+  }
+
+  List<Map<String, dynamic>> add(String id) {
+    List<Map<String, dynamic>> newList = [];
+    localId.forEach((element) {
+      newList.add(element);
+    });
+    newList.add({'id': id});
+    return newList;
   }
 }

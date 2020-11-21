@@ -20,7 +20,7 @@ class EpisodeDisplay extends StatefulWidget {
       @required this.episode,
       @required this.created,
       @required this.characters,
-        @required this.onIconPressed,
+      @required this.onIconPressed,
       this.selected = false});
 
   @override
@@ -63,10 +63,10 @@ class _EpisodeDisplayState extends State<EpisodeDisplay> {
                       onPressed: () {
                         setState(() {
                           isIconSelected = !isIconSelected;
-                          isIconSelected
-                              ? DatabaseManager.addFavouriteEpisodes(widget.id)
-                              : DatabaseManager.deleteEpisode(widget.id);
                         });
+                        isIconSelected
+                            ? DatabaseManager.addFavouriteEpisodes(widget.id)
+                            : DatabaseManager.deleteEpisode(widget.id);
                         widget.onIconPressed(isIconSelected);
                       })),
               Container(
