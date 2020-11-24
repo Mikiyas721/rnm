@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import './injector.dart';
 import './data/databaseManager.dart';
 import './ui/pages/homePage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await DatabaseManager.createTables();
-
-  runApp(MyApp(await DatabaseManager.fetchFavouriteCharacters(),
-      await DatabaseManager.fetchFavouriteLocations(), await DatabaseManager.fetchFavouriteEpisode()));
+  inject();
+  DatabaseManager db = GetIt.instance.get();
+  await db.createTables();
+  runApp(MyApp(await db.fetchFavouriteCharacters(), await db.fetchFavouriteLocations(),
+      await db.fetchFavouriteEpisode()));
 }
 
 class MyApp extends StatelessWidget {

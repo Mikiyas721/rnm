@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import '../../data/models/character.dart';
 import '../../data/databaseManager.dart';
 import '../widgets/imageView.dart';
@@ -21,6 +22,7 @@ class _CharacterDisplayState extends State<CharacterDisplay> {
   bool isIconSelected;
   NetworkImage characterImage;
   bool isImageLoading = true;
+  DatabaseManager db = GetIt.instance.get();
 
   @override
   void initState() {
@@ -59,8 +61,8 @@ class _CharacterDisplayState extends State<CharacterDisplay> {
                       isIconSelected = !isIconSelected;
                     });
                     isIconSelected
-                        ? DatabaseManager.addFavouriteCharacter(widget.character.id)
-                        : DatabaseManager.deleteCharacter(widget.character.id);
+                        ? db.addFavouriteCharacter(widget.character.id)
+                        : db.deleteCharacter(widget.character.id);
                     widget.onIconPressed(isIconSelected);
                   })),
           Container(

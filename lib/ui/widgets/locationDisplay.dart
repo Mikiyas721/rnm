@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import '../../data/models/location.dart';
 import '../pages/characterListPage.dart';
 import '../../data/databaseManager.dart';
@@ -19,6 +20,8 @@ class LocationDisplay extends StatefulWidget {
 
 class _LocationDisplayState extends State<LocationDisplay> {
   bool isIconSelected;
+  DatabaseManager db = GetIt.instance.get();
+
 
   @override
   void initState() {
@@ -55,8 +58,8 @@ class _LocationDisplayState extends State<LocationDisplay> {
                         isIconSelected = !isIconSelected;
                       });
                       isIconSelected
-                          ? DatabaseManager.addFavouriteLocation(widget.location.id)
-                          : DatabaseManager.deleteLocation(widget.location.id);
+                          ? db.addFavouriteLocation(widget.location.id)
+                          : db.deleteLocation(widget.location.id);
                       widget.onIconPressed(isIconSelected);
                     })),
             Container(

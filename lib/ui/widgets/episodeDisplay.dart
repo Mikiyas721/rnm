@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import '../../data/models/episode.dart';
 import '../pages/characterListPage.dart';
 import '../../data/databaseManager.dart';
@@ -17,6 +18,8 @@ class EpisodeDisplay extends StatefulWidget {
 
 class _EpisodeDisplayState extends State<EpisodeDisplay> {
   bool isIconSelected;
+  DatabaseManager db = GetIt.instance.get();
+
 
   @override
   void initState() {
@@ -53,8 +56,8 @@ class _EpisodeDisplayState extends State<EpisodeDisplay> {
                           isIconSelected = !isIconSelected;
                         });
                         isIconSelected
-                            ? DatabaseManager.addFavouriteEpisodes(widget.episode.id)
-                            : DatabaseManager.deleteEpisode(widget.episode.id);
+                            ? db.addFavouriteEpisodes(widget.episode.id)
+                            : db.deleteEpisode(widget.episode.id);
                         widget.onIconPressed(isIconSelected);
                       })),
               Container(
