@@ -1,24 +1,15 @@
 import 'package:flutter/material.dart';
+import '../../data/models/location.dart';
 import '../pages/characterListPage.dart';
 import '../../data/databaseManager.dart';
 
 class LocationDisplay extends StatefulWidget {
-  final String id;
-  final String name;
-  final String type;
-  final String dimension;
-  final String created;
-  final List residents;
+  final Location location;
   final bool selected;
   final Function(bool isSelected) onIconPressed;
 
   LocationDisplay(
-      {@required this.id,
-      @required this.name,
-      @required this.type,
-      @required this.dimension,
-      @required this.created,
-      @required this.residents,
+      {@required this.location,
       @required this.onIconPressed,
       this.selected = false});
 
@@ -40,7 +31,7 @@ class _LocationDisplayState extends State<LocationDisplay> {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-          return CharacterListPage(title: widget.name, characters: widget.residents);
+          return CharacterListPage(title: widget.location.name, characters: widget.location.residents);
         }));
       },
       child: Card(
@@ -64,8 +55,8 @@ class _LocationDisplayState extends State<LocationDisplay> {
                         isIconSelected = !isIconSelected;
                       });
                       isIconSelected
-                          ? DatabaseManager.addFavouriteLocation(widget.id)
-                          : DatabaseManager.deleteLocation(widget.id);
+                          ? DatabaseManager.addFavouriteLocation(widget.location.id)
+                          : DatabaseManager.deleteLocation(widget.location.id);
                       widget.onIconPressed(isIconSelected);
                     })),
             Container(
@@ -75,11 +66,11 @@ class _LocationDisplayState extends State<LocationDisplay> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  Text('\nType :- ${widget.type}', style: TextStyle(fontSize: 16)),
-                  Text('Dimension :- ${widget.dimension}', style: TextStyle(fontSize: 16)),
-                  Text('Created :- ${widget.created}', style: TextStyle(fontSize: 16)),
-                  Text('Character count :- ${widget.residents.length}', style: TextStyle(fontSize: 16))
+                  Text(widget.location.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text('\nType :- ${widget.location.type}', style: TextStyle(fontSize: 16)),
+                  Text('Dimension :- ${widget.location.dimension}', style: TextStyle(fontSize: 16)),
+                  Text('Created :- ${widget.location.created}', style: TextStyle(fontSize: 16)),
+                  Text('Character count :- ${widget.location.residents.length}', style: TextStyle(fontSize: 16))
                 ],
               ),
             )

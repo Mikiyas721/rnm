@@ -41,11 +41,7 @@ class _MyTabState extends State<MyTab> {
                   itemBuilder: (BuildContext context, int index) {
                     if (widget.type == "Character")
                       return CharacterDisplay(
-                        id: result.data['characters']['results'][index]['id'],
-                        species: result.data['characters']['results'][index]['species'],
-                        imageUrl: result.data['characters']['results'][index]['image'],
-                        name: result.data['characters']['results'][index]['name'],
-                        gender: result.data['characters']['results'][index]['gender'],
+                        character: result.data['characters']['result'][index],
                         selected: contains(localId, result.data['characters']['results'][index]['id']),
                         onIconPressed: (bool isIconSelected) {
                           setState(() {
@@ -58,12 +54,7 @@ class _MyTabState extends State<MyTab> {
                       );
                     else if (widget.type == "Location")
                       return LocationDisplay(
-                        id: result.data['locations']['results'][index]['id'],
-                        name: result.data['locations']['results'][index]['name'],
-                        type: result.data['locations']['results'][index]['type'],
-                        dimension: result.data['locations']['results'][index]['dimension'],
-                        created: result.data['locations']['results'][index]['created'],
-                        residents: result.data['locations']['results'][index]['residents'],
+                        location: result.data['locations']['results'][index],
                         selected: contains(localId, result.data['locations']['results'][index]['id']),
                         onIconPressed: (bool isIconSelected) {
                           setState(() {
@@ -76,12 +67,7 @@ class _MyTabState extends State<MyTab> {
                       );
                     else
                       return EpisodeDisplay(
-                        id: result.data['episodes']['results'][index]['id'],
-                        name: result.data['episodes']['results'][index]['name'],
-                        airDate: result.data['episodes']['results'][index]['air_date'],
-                        episode: result.data['episodes']['results'][index]['episode'],
-                        created: result.data['episodes']['results'][index]['created'],
-                        characters: result.data['episodes']['results'][index]['characters'],
+                        episode: result.data['episodes']['results'][index],
                         selected: contains(localId, result.data['episodes']['results'][index]['id']),
                         onIconPressed: (bool isIconSelected) {
                           setState(() {

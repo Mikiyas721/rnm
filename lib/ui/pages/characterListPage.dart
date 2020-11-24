@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../data/models/character.dart';
 
 class CharacterListPage extends StatelessWidget {
   final String title;
-  final List characters;
+  final List<Character> characters;
 
   CharacterListPage({@required this.title, @required this.characters});
 
@@ -19,7 +20,7 @@ class CharacterListPage extends StatelessWidget {
         itemCount: characters.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text(characters[index]['name']),
+            title: Text(characters[index].name),
           );
         },
       ),

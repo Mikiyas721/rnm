@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
+import '../../data/models/character.dart';
 import '../../data/databaseManager.dart';
 import '../widgets/imageView.dart';
 
 class CharacterDisplay extends StatefulWidget {
-  final id;
-  final imageUrl;
-  final name;
-  final gender;
-  final species;
-  final selected;
+  final Character character;
+  final bool selected;
   final Function(bool isSelected) onIconPressed;
 
   CharacterDisplay(
-      {@required this.id,
-      @required this.imageUrl,
-      @required this.name,
-      @required this.gender,
-      @required this.species,
+      {@required this.character,
       @required this.onIconPressed,
       this.selected = false});
 
@@ -32,7 +25,7 @@ class _CharacterDisplayState extends State<CharacterDisplay> {
   @override
   void initState() {
     isIconSelected = widget.selected;
-    characterImage = NetworkImage(widget.imageUrl);
+    characterImage = NetworkImage(widget.character.image);
     characterImage.resolve(ImageConfiguration()).addListener(ImageStreamListener((_, __) {
       if (mounted) {
         setState(() {
@@ -66,8 +59,8 @@ class _CharacterDisplayState extends State<CharacterDisplay> {
                       isIconSelected = !isIconSelected;
                     });
                     isIconSelected
-                        ? DatabaseManager.addFavouriteCharacter(widget.id)
-                        : DatabaseManager.deleteCharacter(widget.id);
+                        ? DatabaseManager.addFavouriteCharacter(widget.character.id)
+                        : DatabaseManager.deleteCharacter(widget.character.id);
                     widget.onIconPressed(isIconSelected);
                   })),
           Container(
@@ -76,7 +69,7 @@ class _CharacterDisplayState extends State<CharacterDisplay> {
               children: [
                 isImageLoading
                     ? CircleAvatar(
-                        child: Text('${widget.name[0]}', style: TextStyle(fontSize: 20)),
+                        child: Text('${widget.character.name[0]}', style: TextStyle(fontSize: 20)),
                         radius: 50,
                       )
                     : GestureDetector(
@@ -87,7 +80,7 @@ class _CharacterDisplayState extends State<CharacterDisplay> {
                         onTap: () {
                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
                             return MyImageView(
-                              imageUrl: widget.imageUrl,
+                              imageUrl: widget.character.image,
                             );
                           }));
                         },
@@ -101,7 +94,7 @@ class _CharacterDisplayState extends State<CharacterDisplay> {
                     children: [
                       SizedBox(
                         child: Text(
-                          'Name :- ${widget.name}',
+                          'Name :- ${widget.character.name}',
                           style: TextStyle(
                             fontSize: 16,
                           ),
@@ -111,8 +104,8 @@ class _CharacterDisplayState extends State<CharacterDisplay> {
                         ),
                         width: MediaQuery.of(context).size.width * 0.55,
                       ),
-                      Text('Gender :- ${widget.gender}', style: TextStyle(fontSize: 16)),
-                      Text('Species :- ${widget.species}', style: TextStyle(fontSize: 16))
+                      Text('Gender :- ${widget.character.gender}', style: TextStyle(fontSize: 16)),
+                      Text('Species :- ${widget.character.species}', style: TextStyle(fontSize: 16))
                     ],
                   ),
                 ),

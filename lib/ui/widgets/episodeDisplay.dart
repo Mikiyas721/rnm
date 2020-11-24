@@ -1,27 +1,15 @@
 import 'package:flutter/material.dart';
+import '../../data/models/episode.dart';
 import '../pages/characterListPage.dart';
 import '../../data/databaseManager.dart';
 
 class EpisodeDisplay extends StatefulWidget {
-  final String id;
-  final String name;
-  final String airDate;
-  final String episode;
-  final String created;
-  final List characters;
+  final Episode episode;
   final Function(bool isSelected) onIconPressed;
 
   final selected;
 
-  EpisodeDisplay(
-      {@required this.id,
-      @required this.name,
-      @required this.airDate,
-      @required this.episode,
-      @required this.created,
-      @required this.characters,
-      @required this.onIconPressed,
-      this.selected = false});
+  EpisodeDisplay({@required this.episode, @required this.onIconPressed, this.selected = false});
 
   @override
   _EpisodeDisplayState createState() => _EpisodeDisplayState();
@@ -41,7 +29,7 @@ class _EpisodeDisplayState extends State<EpisodeDisplay> {
     return GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-            return CharacterListPage(title: widget.episode, characters: widget.characters);
+            return CharacterListPage(title: widget.episode.episode, characters: widget.episode.characters);
           }));
         },
         child: Card(
@@ -65,8 +53,8 @@ class _EpisodeDisplayState extends State<EpisodeDisplay> {
                           isIconSelected = !isIconSelected;
                         });
                         isIconSelected
-                            ? DatabaseManager.addFavouriteEpisodes(widget.id)
-                            : DatabaseManager.deleteEpisode(widget.id);
+                            ? DatabaseManager.addFavouriteEpisodes(widget.episode.id)
+                            : DatabaseManager.deleteEpisode(widget.episode.id);
                         widget.onIconPressed(isIconSelected);
                       })),
               Container(
@@ -76,11 +64,11 @@ class _EpisodeDisplayState extends State<EpisodeDisplay> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(widget.episode, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    Text('\nName :- ${widget.name}', style: TextStyle(fontSize: 16)),
-                    Text('Air Date :- ${widget.airDate}', style: TextStyle(fontSize: 16)),
-                    Text('Created :- ${widget.created}', style: TextStyle(fontSize: 16)),
-                    Text('Character count :- ${widget.characters.length}', style: TextStyle(fontSize: 16))
+                    Text(widget.episode.episode, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    Text('\nName :- ${widget.episode.name}', style: TextStyle(fontSize: 16)),
+                    Text('Air Date :- ${widget.episode.airDate}', style: TextStyle(fontSize: 16)),
+                    Text('Created :- ${widget.episode.created}', style: TextStyle(fontSize: 16)),
+                    Text('Character count :- ${widget.episode.characters.length}', style: TextStyle(fontSize: 16))
                   ],
                 ),
               )
