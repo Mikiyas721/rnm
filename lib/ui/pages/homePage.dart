@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../widgets/myTab.dart';
+import 'charactersPage.dart';
+import 'episodesPage.dart';
+import 'locationsPage.dart';
 
 class HomePage extends StatefulWidget {
   final List<Map<String, dynamic>> characters;
@@ -271,8 +273,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ];
           },
           body: TabBarView(controller: _tabController, children: [
-            MyTab(
-              type: "Character",
+            CharactersPage(
               query: currentCharacterQuery,
               ids: starredCharacters ?? [],
               onIdsChanged: (ids) {
@@ -281,8 +282,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 });
               },
             ),
-            MyTab(
-              type: "Location",
+            LocationsPage(
               query: currentLocationQuery,
               ids: starredLocations ?? [],
               onIdsChanged: (ids) {
@@ -291,8 +291,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 });
               },
             ),
-            MyTab(
-              type: "Episode",
+            EpisodesPage(
               query: currentEpisodeQuery,
               ids: starredEpisodes ?? [],
               onIdsChanged: (ids) {
