@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 import '../../utils/mixin/formatterMixin.dart';
 import '../../data/models/character.dart';
 
@@ -11,7 +12,8 @@ class CharacterListPage extends StatelessWidget with FormatterMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: GradientAppBar(
+        gradient: LinearGradient(colors: [Color(0xFFfbf07a), Color(0xFF01b1c9), Color(0xFF90E64b)]),
         title: Text(title),
       ),
       body: ListView.separated(
@@ -35,7 +37,10 @@ class CharacterListPage extends StatelessWidget with FormatterMixin {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Image.network(characters[index].image, width: MediaQuery.of(context).size.width*0.9,),
+                        title: Image.network(
+                          characters[index].image,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                        ),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,

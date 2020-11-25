@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../data/models/episode.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class EpisodeListPage extends StatelessWidget {
   final String title;
@@ -11,7 +12,8 @@ class EpisodeListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: GradientAppBar(
+        gradient: LinearGradient(colors: [Color(0xFF90E64b), Color(0xFF01b1c9), Color(0xFFfbf07a)]),
         title: Row(
           children: [
             Padding(
