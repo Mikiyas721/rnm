@@ -30,7 +30,7 @@ class EpisodeModel {
 
   static List<EpisodeModel> fromList(List list) {
     List<EpisodeModel> episodes;
-    if (episodes != null) {
+    if (list != null) {
       episodes = [];
       list.forEach((map) {
         episodes.add(EpisodeModel.fromJson(map));

@@ -45,13 +45,17 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                      gender
                      origin{
                        id
+                       name
                      }
                      location{
                        id
+                       name
                      }
                      image
                      episode{
                        id
+                       name
+                       episode
                      }
                      created
                    }
@@ -106,6 +110,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                        image
                        episode{
                          id
+                         name
+                         episode                 
                        }
                        created
                      }
@@ -221,13 +227,17 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                  gender
                                                                  origin{
                                                                    id
+                                                                   name
                                                                  }
                                                                  location{
                                                                    id
+                                                                   name
                                                                  }
                                                                  image
                                                                  episode{
                                                                    id
+                                                                   name
+                                                                   episode
                                                                  }
                                                                  created                   
                                                                }
@@ -252,16 +262,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                     species
                                                                     type
                                                                     gender
-                                                                    origin{
-                                                                      id
-                                                                    }
-                                                                    location{
-                                                                      id
-                                                                    }
-                                                                    image
-                                                                    episode{
-                                                                      id
-                                                                    }
+                                                                    image                                                                    
                                                                     created
                                                                   }
                                                                }
@@ -280,7 +281,14 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                                  episode
                                                                  created
                                                                  characters{
+                                                                   id
                                                                    name
+                                                                   status
+                                                                   species
+                                                                   type
+                                                                   gender
+                                                                   image    
+                                                                   created
                                                                  }
                                                                }
                                                              }
