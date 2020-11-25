@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import '../../utils/mixin/formatterMixin.dart';
 import '../../data/models/location.dart';
 import '../pages/characterListPage.dart';
 import '../../data/databaseManager.dart';
 
 class LocationDisplay extends StatefulWidget {
-  final Location location;
+  final LocationModel location;
   final bool selected;
   final Function(bool isSelected) onIconPressed;
 
@@ -18,7 +19,7 @@ class LocationDisplay extends StatefulWidget {
   _LocationDisplayState createState() => _LocationDisplayState();
 }
 
-class _LocationDisplayState extends State<LocationDisplay> {
+class _LocationDisplayState extends State<LocationDisplay> with FormatterMixin {
   bool isIconSelected;
   DatabaseManager db = GetIt.instance.get();
 
@@ -72,7 +73,7 @@ class _LocationDisplayState extends State<LocationDisplay> {
                   Text(widget.location.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   Text('\nType :- ${widget.location.type}', style: TextStyle(fontSize: 16)),
                   Text('Dimension :- ${widget.location.dimension}', style: TextStyle(fontSize: 16)),
-                  Text('Created :- ${widget.location.created}', style: TextStyle(fontSize: 16)),
+                  Text('Created :- ${getDate(widget.location.created)}', style: TextStyle(fontSize: 16)),
                   Text('Character count :- ${widget.location.residents.length}', style: TextStyle(fontSize: 16))
                 ],
               ),

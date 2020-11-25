@@ -1,14 +1,14 @@
 import 'character.dart';
 
-class Episode {
+class EpisodeModel {
   String id;
   String name;
   String airDate;
   String episode;
-  List<Character> characters;
+  List<CharacterModel> characters;
   String created;
 
-  Episode({
+  EpisodeModel({
     this.id,
     this.name,
     this.airDate,
@@ -17,14 +17,25 @@ class Episode {
     this.created,
   });
 
-  factory Episode.fromJson(Map<String, dynamic> map) {
-    return Episode(
+  factory EpisodeModel.fromJson(Map<String, dynamic> map) {
+    return EpisodeModel(
       id: map['id'],
       name: map['name'],
       airDate: map['air_date'],
       episode: map['episode'],
-      characters: map['characters'],
+      characters: CharacterModel.fromList(map['characters']),
       created: map['created'],
     );
+  }
+
+  static List<EpisodeModel> fromList(List list) {
+    List<EpisodeModel> episodes;
+    if (episodes != null) {
+      episodes = [];
+      list.forEach((map) {
+        episodes.add(EpisodeModel.fromJson(map));
+      });
+    }
+    return episodes;
   }
 }

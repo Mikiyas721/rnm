@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:ricknmorty/utils/mixin/formatterMixin.dart';
 import '../../data/models/episode.dart';
 import '../pages/characterListPage.dart';
 import '../../data/databaseManager.dart';
 
 class EpisodeDisplay extends StatefulWidget {
-  final Episode episode;
+  final EpisodeModel episode;
   final Function(bool isSelected) onIconPressed;
 
   final selected;
@@ -16,7 +17,7 @@ class EpisodeDisplay extends StatefulWidget {
   _EpisodeDisplayState createState() => _EpisodeDisplayState();
 }
 
-class _EpisodeDisplayState extends State<EpisodeDisplay> {
+class _EpisodeDisplayState extends State<EpisodeDisplay> with FormatterMixin {
   bool isIconSelected;
   DatabaseManager db = GetIt.instance.get();
 
@@ -70,7 +71,7 @@ class _EpisodeDisplayState extends State<EpisodeDisplay> {
                     Text(widget.episode.episode, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     Text('\nName :- ${widget.episode.name}', style: TextStyle(fontSize: 16)),
                     Text('Air Date :- ${widget.episode.airDate}', style: TextStyle(fontSize: 16)),
-                    Text('Created :- ${widget.episode.created}', style: TextStyle(fontSize: 16)),
+                    Text('Created :- ${getDate(widget.episode.created)}', style: TextStyle(fontSize: 16)),
                     Text('Character count :- ${widget.episode.characters.length}', style: TextStyle(fontSize: 16))
                   ],
                 ),

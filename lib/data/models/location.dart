@@ -1,14 +1,14 @@
 import 'character.dart';
 
-class Location {
+class LocationModel {
   String id;
   String name;
   String type;
   String dimension;
-  List<Character> residents;
+  List<CharacterModel> residents;
   String created;
 
-  Location({
+  LocationModel({
     this.id,
     this.name,
     this.type,
@@ -17,14 +17,25 @@ class Location {
     this.created,
   });
 
-  factory Location.fromJson(Map<String, dynamic> map) {
-    return Location(
+  factory LocationModel.fromJson(Map<String, dynamic> map) {
+    return LocationModel(
       id: map['id'],
       name: map['name'],
       type: map['type'],
       dimension: map['dimension'],
-      residents: map['residents'],
+      residents: CharacterModel.fromList(map['residents']),
       created: map['created'],
     );
+  }
+
+  static List<LocationModel> fromList(List list) {
+    List<LocationModel> locations;
+    if (list != null) {
+      locations = [];
+      list.forEach((map) {
+        locations.add(LocationModel.fromJson(map));
+      });
+    }
+    return locations;
   }
 }

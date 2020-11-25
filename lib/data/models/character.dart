@@ -1,20 +1,20 @@
 import 'episode.dart';
 import 'location.dart';
 
-class Character {
+class CharacterModel {
   String id;
   String name;
   String status;
   String species;
   String type;
   String gender;
-  Location origin;
-  Location location;
+  LocationModel origin;
+  LocationModel location;
   String image;
-  List<Episode> episode;
+  List<EpisodeModel> episode;
   String created;
 
-  Character({
+  CharacterModel({
     this.id,
     this.name,
     this.status,
@@ -28,19 +28,29 @@ class Character {
     this.created,
   });
 
-  factory Character.fromJson(Map<String, dynamic> map){
-    return Character(
+  factory CharacterModel.fromJson(Map<String, dynamic> map){
+    return CharacterModel(
         id:map['id'],
         name:map['name'],
         status:map['status'],
         species:map['species'],
         type:map['type'],
         gender:map['gender'],
-        origin:map['origin'],
-        location:map['location'],
+        origin:map['origin']==null?map['origin']:LocationModel.fromJson(map['origin']),
+        location:map['location']==null?map['location']:LocationModel.fromJson(map['location']),
         image:map['image'],
-        episode:map['episode'],
+        episode:EpisodeModel.fromList(map['episode']),
         created:map['created'],
     );
+  }
+  static List<CharacterModel> fromList(List list){
+    List<CharacterModel> characters ;
+    if(list!=null){
+      characters = [];
+      list.forEach((map) {
+        characters.add(CharacterModel.fromJson(map));
+      });
+    }
+    return characters;
   }
 }

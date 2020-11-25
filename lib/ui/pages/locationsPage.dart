@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import '../../data/models/location.dart';
 import '../../ui/widgets/locationDisplay.dart';
 import '../../utils/mixin/tabMixin.dart';
 
@@ -26,15 +27,17 @@ class _LocationsPageState extends State<LocationsPage> with TabMixin {
     return Query(
       options: QueryOptions(documentNode: gql(widget.query)),
       builder: (QueryResult result, {VoidCallback refetch, FetchMore fetchMore}) {
-        if (result.data == null) {
+        if (result.loading) {
           return Center(
             child: CircularProgressIndicator(),
           );
         } else {
-          return ListView.builder(
+          return result.data == null
+              ? Center(child: Text('No Location Found'))
+              :ListView.builder(
               itemBuilder: (BuildContext context, int index) {
                 return LocationDisplay(
-                  location: result.data['locations']['results'][index],
+                  location: LocationModel.fromJson(result.data['locations']['results'][index]),
                   selected: contains(localId, result.data['locations']['results'][index]['id']),
                   onIconPressed: (bool isIconSelected) {
                     setState(() {
@@ -46,7 +49,7 @@ class _LocationsPageState extends State<LocationsPage> with TabMixin {
                   },
                 );
               },
-              itemCount: getItemCount(result, "Locations"));
+              itemCount: getItemCount(result, "Location"));
         }
       },
     );;

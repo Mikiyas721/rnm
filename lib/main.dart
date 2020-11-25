@@ -9,6 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   inject();
   DatabaseManager db = GetIt.instance.get();
+  await db.fireUpDatabase();
   await db.createTables();
   runApp(MyApp(await db.fetchFavouriteCharacters(), await db.fetchFavouriteLocations(),
       await db.fetchFavouriteEpisode()));

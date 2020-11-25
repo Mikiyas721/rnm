@@ -5,7 +5,7 @@ import '../../data/databaseManager.dart';
 import '../widgets/imageView.dart';
 
 class CharacterDisplay extends StatefulWidget {
-  final Character character;
+  final CharacterModel character;
   final bool selected;
   final Function(bool isSelected) onIconPressed;
 
